@@ -87,3 +87,69 @@ func1();
 
 JS devuelve un ReferenceError ya que console.log(scope) fue llamado desde func2(); por fuera de func3() 
 en donde se encuentra definido const scope = “I’m local 3”. Por lo que JS no puede encontrarlo y devuelve el error.
+
+## Closure
+Un closure es una función interna que tiene acceso a el alcance de su función externa incluso después de que la función externa ejecute return
+### Explicación con código
+~~~
+// Cuando combinamos scope con functions creamos el closure
+const creaFunciones = () => {
+    let nombre = 'Astrik';
+
+    // 'muestraNombre' es una función interna (un closure)
+    const muestraNombre = () => {
+        console.log(nombre);
+    }
+
+    /* Soy la referencia de una función 'muestraNombre'
+       y voy a recordar el estado de las variables
+       al momento que me invoquen
+    */
+    return muestraNombre;
+}
+
+const miNuevaFuncion = creaFunciones();
+miNuevaFuncion(); //Print: Astrik ¡Recordé el nombre!
+~~~
+miNuevaFuncion se ha convertido en un closure. Un closure es un tipo especial de objeto que combina dos cosas, **una función, y el ámbito léxico en que se creó esa función**
+
+Significa que un closure puede recordar y acceder a variables y argumentos de su función externa, incluso después de que la función externa haya finalizado.
+
+Otro ejemplo es:
+~~~
+const buildCount = (i)=>{
+    let count = i;
+    const displayCount = () =>{
+        console.log(++count);
+    }
+    return displayCount;
+};
+
+const myCount = buildCount(0);
+myCount(); // 1
+myCount(); // 2
+myCount(); // 3
+~~~
+### Variables privadas usan closures
+Con el uso de closures, podemos tener algo parecido a variables privadas. Es decir, encapsulan variables que no pueden ser modificadas directamente por otros objetos, solo por las funciones pertenecientes al mismo.
+~~~
+const person = () => {
+    let saveName = 'Name';
+    return {
+        getName: () => {
+            return saveName;
+        },
+        setName: (name) => {
+            saveName = name;
+        },
+    };
+};
+
+const newPerson = person();
+console.log(newPerson.getName()); // Print: Name
+newPerson.setName('Astrik'); // Modificamos la variable atraves del método setName
+console.log(newPerson.getName()); // Print: Astrik
+~~~
+## Referencias:
+https://developer.mozilla.org/es/docs/Web/JavaScript/Closures
+https://platzi.com/clases/scope/
