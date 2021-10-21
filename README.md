@@ -152,4 +152,5 @@ console.log(newPerson.getName()); // Print: Astrik
 ~~~
 ## Referencias:
 https://developer.mozilla.org/es/docs/Web/JavaScript/Closures
+
 https://platzi.com/clases/scope/
